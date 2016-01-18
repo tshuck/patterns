@@ -1,8 +1,29 @@
 require './base_runner'
 require './flake'
 
+# Using Procs here as an exercise - this file is way too big and these should
+# be static methods on a module or something, e.g., 'FlakeColor::Rainbow'
+
+# Colors for flakes
+rainbow_color = lambda do |flake|
+  Flake::COLORS.sample
+end
+
+random_color = lambda do |flake|
+  flake.cached_color ||= Flake::COLORS.sample
+end
+
+# Shapes for flakes
+rainbow_shape = lambda do |flake|
+  Flake::SHAPES.sample
+end
+
 # Flake setup
-flakes = [Flake.new, Flake.new(color: 'blue', direction: Flake::LEFT), Flake.new(color: 'red')]
+flakes = [
+  Flake.new(shape: rainbow_shape),
+  Flake.new(color: rainbow_color),
+  Flake.new(shape: rainbow_shape, color: rainbow_color)
+]
 
 # Collision detection for the runner
 bounce_on_walls = lambda do |runner, flake|

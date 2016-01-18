@@ -1,7 +1,7 @@
 class BaseRunner
   attr_accessor :width, :flakes
 
-  def initialize(flakes: [], switch_direction_on_collision: '1', distribute_flakes: -> {}, width: 80)
+  def initialize(flakes: [], switch_direction_on_collision: -> {}, distribute_flakes: -> {}, width: 80)
     @switch_direction_on_collision = switch_direction_on_collision
     @flakes = flakes
     @width = width
@@ -23,6 +23,9 @@ class BaseRunner
 
   def move_flakes
     @flakes.each do |flake|
+      # Direction switching could belong to the flakes themselves,
+      # although we'd have to give them knowledge of the rest of the set of
+      # flakes.
       @switch_direction_on_collision.call(self, flake)
       flake.continue
     end
