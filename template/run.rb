@@ -5,6 +5,6 @@ require './runners/random_bounce_runner.rb'
 
 # runner = BaseRunner.new
 # runner = RainbowRunner.new
-# runner = BounceRunner.new width: 60
-runner = RandomBounceRunner.new width: 100
+runner = BounceRunner.new width: 60
+# runner = RandomBounceRunner.new width: 100
 runner.run
