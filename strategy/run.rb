@@ -5,16 +5,16 @@ require './flake'
 # be static methods on a module or something, e.g., 'FlakeColor::Rainbow'
 
 # Colors for flakes
-rainbow_color = lambda do |flake|
+rainbow_color = Proc.new do
   Flake::COLORS.sample
 end
 
-random_color = lambda do |flake|
+random_color = Proc.new do |flake|
   flake.cached_color ||= Flake::COLORS.sample
 end
 
 # Shapes for flakes
-rainbow_shape = lambda do |flake|
+rainbow_shape = Proc.new do
   Flake::SHAPES.sample
 end
 
@@ -26,12 +26,12 @@ flakes = [
 ]
 
 # Collision detection for the runner
-bounce_on_walls = lambda do |runner, flake|
-  return flake.turn_right if flake.position == 0
+bounce_on_walls = Proc.new do |runner, flake|
+  next flake.turn_right if flake.position == 0
   flake.turn_left if flake.position == runner.width
 end
 
-bounce_on_flakes = lambda do |runner, _flake|
+bounce_on_flakes = Proc.new do |runner, _flake|
   sorted_flakes = runner.flakes.sort_by { |flake| flake.position }
 
   # Iterate flakes from left to right, skipping the last
@@ -46,20 +46,20 @@ bounce_on_flakes = lambda do |runner, _flake|
   end
 end
 
-bounce_on_walls_and_flakes = lambda do |runner, flake|
+bounce_on_walls_and_flakes = Proc.new do |runner, flake|
   bounce_on_flakes.call(runner, flake)
   bounce_on_walls.call(runner, flake)
 end
 
 # Initial flake distribution for the runner
-even_distribution = lambda do |runner|
+even_distribution = Proc.new do |runner|
   increment = (runner.width / flakes.size).to_i
   runner.flakes.each_with_index do |flake, idx|
     flake.position = idx * increment
   end
 end
 
-all_left = lambda do |runner|
+all_left = Proc.new do |runner|
   runner.flakes.each_with_index do |flake, idx|
     flake.position = idx
   end
